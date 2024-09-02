@@ -1,5 +1,7 @@
 # custom-slider-react
 
+**[npm](https://www.npmjs.com/package/custom-slider-react)**
+
 A input slider component for React with fully customizable.
 
 ![full-example.gif](docs%2Ffull-example.gif)
