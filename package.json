@@ -1,14 +1,18 @@
 {
-  "name": "@livemehere/{packageName}",
-  "version": "0.0.3",
+  "name": "custom-slider-react",
+  "version": "1.0.0",
   "type": "module",
   "author": "livemehere",
-  "homepage": "https://github.com/livemehere/{repoName}",
-  "repository": "https://github.com/livemehere/{repoName}",
-  "description": "{description}",
+  "homepage": "https://github.com/livemehere/custom-slider-react",
+  "repository": "https://github.com/livemehere/custom-slider-react",
+  "description": "Input range slider for react with full customization.",
   "license": "MIT",
   "keywords": [
-    "react"
+    "react",
+    "slider",
+    "range",
+    "input",
+    "custom"
   ],
   "exports": {
     ".": {
