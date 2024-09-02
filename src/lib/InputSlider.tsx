@@ -163,6 +163,12 @@ export default function InputSlider({
         width: "100%",
         height: `${height}px`,
       }}
+      onPointerDown={(e) => {
+        const tx = e.clientX - trackRef.current!.getBoundingClientRect().left;
+        const ratio = tx / getTrackWidth();
+        updateData(ratio, true);
+        pointerState.current.isDown = true;
+      }}
     >
       <div
         ref={trackRef}
@@ -173,12 +179,6 @@ export default function InputSlider({
           width: "100%",
           height: `${track.size}px`,
           top: `${height / 2 - track.size / 2}px`,
-        }}
-        onPointerDown={(e) => {
-          const tx = e.clientX - trackRef.current!.getBoundingClientRect().left;
-          const ratio = tx / getTrackWidth();
-          updateData(ratio, true);
-          pointerState.current.isDown = true;
         }}
       />
       <div
