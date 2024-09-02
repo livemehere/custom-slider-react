@@ -220,18 +220,22 @@ export default function InputSlider({
         }}
       >
         {renderSnapValue &&
-          snapIndexArr.map((v) => (
-            <div
-              key={v}
-              style={{
-                position: "absolute",
-                left: `${map(v, min, max, 0, width)}px`,
-                transform: "translateX(-50%)",
-              }}
-            >
-              {renderSnapValue(v)}
-            </div>
-          ))}
+          snapIndexArr
+            .filter((v) => !!renderSnapValue(v))
+            .map((v) => {
+              return (
+                <div
+                  key={v}
+                  style={{
+                    position: "absolute",
+                    left: `${map(v, min, max, 0, width)}px`,
+                    transform: "translateX(-50%)",
+                  }}
+                >
+                  {renderSnapValue(v)}
+                </div>
+              );
+            })}
       </div>
     </div>
   );
