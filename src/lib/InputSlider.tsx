@@ -164,10 +164,13 @@ export default function InputSlider({
         height: `${height}px`,
       }}
       onPointerDown={(e) => {
-        const tx = e.clientX - trackRef.current!.getBoundingClientRect().left;
+        const tx = e.clientX - e.currentTarget.getBoundingClientRect().left;
         const ratio = tx / getTrackWidth();
+
         updateData(ratio, true);
         pointerState.current.isDown = true;
+        pointerState.current.startX = e.clientX;
+        pointerState.current.startTx = tx;
       }}
     >
       <div
