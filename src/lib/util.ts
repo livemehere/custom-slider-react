@@ -16,3 +16,7 @@ export function map(
 ) {
   return ((value - min) * (newMax - newMin)) / (max - min) + newMin;
 }
+
+export function safeValue(v: number | undefined) {
+  return v === undefined || isNaN(v) ? 0 : v;
+}
