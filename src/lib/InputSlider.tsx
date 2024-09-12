@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { map, getTranslateXY } from "./util";
+import { map, getTranslateXY, safeValue } from "./util";
 
 type Data = {
   ratio: number;
@@ -202,7 +202,7 @@ export default function InputSlider({
           position: "absolute",
           left: 0,
           top: "50%",
-          transform: `translateY(-50%) translateX(${map(data.value, min, max, 0, getTrackWidth())}px)`,
+          transform: `translateY(-50%) translateX(${safeValue(map(data.value, min, max, 0, getTrackWidth()))}px)`,
         }}
       >
         <div
