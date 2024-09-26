@@ -87,6 +87,8 @@ type RangeSliderProps = {
     maxValue: number;
     onChangeMin?: (data: Data) => void;
     onChangeMax?: (data: Data) => void;
+    minDisabled?: boolean;
+    maxDisabled?: boolean;
 };
 
 type SliderProps = {
@@ -104,6 +106,7 @@ type SliderProps = {
     renderSnapValue?: (value: number) => React.ReactNode;
     onChange?: (data: Data) => void;
     value: number;
+    disabled?: boolean;
 };
 ```
 

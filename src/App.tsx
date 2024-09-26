@@ -76,6 +76,7 @@ function App() {
         <RangeSlider
           minValue={minV}
           maxValue={maxV}
+          maxDisabled
           onChangeMin={(value) => setMinV(value.value)}
           onChangeMax={(value) => setMaxV(value.value)}
           min={-10}

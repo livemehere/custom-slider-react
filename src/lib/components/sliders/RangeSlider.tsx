@@ -23,6 +23,8 @@ type Props = {
   maxValue: number;
   onChangeMin?: (data: Data) => void;
   onChangeMax?: (data: Data) => void;
+  maxDisabled?: boolean;
+  minDisabled?: boolean;
 };
 
 export default function RangeSlider({
@@ -39,6 +41,8 @@ export default function RangeSlider({
   onChangeMin,
   renderMaxThumb,
   renderMinThumb,
+  maxDisabled,
+  minDisabled,
 }: Props) {
   const [minData, setMinData] = useState({
     ratio: map(minValue, min, max, 0, 1),
@@ -91,6 +95,7 @@ export default function RangeSlider({
   };
 
   const updateMaxData = (v: number, ratio?: boolean, isExternal?: boolean) => {
+    if (maxDisabled) return;
     const newData = calcNewData(v, ratio);
     // prevent duplicated event
     if (newData.value === maxData.value) return;
@@ -101,6 +106,7 @@ export default function RangeSlider({
   };
 
   const updateMinData = (v: number, ratio?: boolean, isExternal?: boolean) => {
+    if (minDisabled) return;
     const newData = calcNewData(v, ratio);
     // prevent duplicated event
     if (newData.value === minData.value) return;

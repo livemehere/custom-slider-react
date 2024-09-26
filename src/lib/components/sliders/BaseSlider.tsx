@@ -23,6 +23,7 @@ type Props = {
   renderSnapValue?: (value: number) => React.ReactNode;
   onChange?: (data: Data) => void;
   value: number;
+  disabled?: boolean;
 };
 
 export default function BaseSlider({
@@ -36,6 +37,7 @@ export default function BaseSlider({
   renderSnapValue,
   onChange,
   value,
+  disabled,
 }: Props) {
   const [data, setData] = useState({
     ratio: map(value, min, max, 0, 1),
@@ -75,6 +77,7 @@ export default function BaseSlider({
   }, []);
 
   const updateData = (v: number, isRatio?: boolean, isExternal?: boolean) => {
+    if (disabled) return;
     const newData = calcDataFromValue(v, min, max, step, snap!, isRatio);
     // prevent duplicated event
     if (newData.value === data.value) return;
