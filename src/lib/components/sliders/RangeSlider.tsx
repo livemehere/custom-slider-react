@@ -16,15 +16,16 @@ type Props = {
     style?: React.CSSProperties;
     fillColor?: string;
   };
-  renderMinThumb: (data: Data) => React.ReactNode;
-  renderMaxThumb: (data: Data) => React.ReactNode;
+  renderMinThumb: (value: number) => React.ReactNode;
+  renderMaxThumb: (value: number) => React.ReactNode;
   renderSnapValue?: (value: number) => React.ReactNode;
   minValue: number;
   maxValue: number;
-  onChangeMin?: (data: Data) => void;
-  onChangeMax?: (data: Data) => void;
+  onChangeMin?: (value: number) => void;
+  onChangeMax?: (value: number) => void;
   maxDisabled?: boolean;
   minDisabled?: boolean;
+  snapYOffset?: number;
 };
 
 export default function RangeSlider({
@@ -43,6 +44,7 @@ export default function RangeSlider({
   renderMinThumb,
   maxDisabled,
   minDisabled,
+  snapYOffset,
 }: Props) {
   const [minData, setMinData] = useState({
     ratio: map(minValue, min, max, 0, 1),
@@ -101,7 +103,7 @@ export default function RangeSlider({
     if (newData.value === maxData.value) return;
     setMaxData(newData);
     if (!isExternal) {
-      onChangeMax?.(newData);
+      onChangeMax?.(newData.value);
     }
   };
 
@@ -112,7 +114,7 @@ export default function RangeSlider({
     if (newData.value === minData.value) return;
     setMinData(newData);
     if (!isExternal) {
-      onChangeMin?.(newData);
+      onChangeMin?.(newData.value);
     }
   };
 
@@ -173,7 +175,7 @@ export default function RangeSlider({
         value={maxData.value}
         onUpdateData={updateMaxData}
       >
-        {renderMaxThumb(maxData)}
+        {renderMaxThumb(maxData.value)}
       </Thumb>
       <Thumb
         pointerRef={minThumbPointerRef}
@@ -183,13 +185,14 @@ export default function RangeSlider({
         value={minData.value}
         onUpdateData={updateMinData}
       >
-        {renderMinThumb(minData)}
+        {renderMinThumb(minData.value)}
       </Thumb>
       <div
         style={{
           position: "absolute",
-          bottom: 0,
+          top: "100%",
           width: "100%",
+          transform: `translateY(${snapYOffset ?? 0}px)`,
         }}
       >
         {renderSnapValue && (
