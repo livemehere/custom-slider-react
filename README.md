@@ -28,13 +28,13 @@ const [maxV, setMaxV] = useState(10);
 <RangeSlider
     minValue={minV}
     maxValue={maxV}
-    onChangeMin={(value) => setMinV(value.value)}
-    onChangeMax={(value) => setMaxV(value.value)}
+    onChangeMin={(value) => setMinV(value)}
+    onChangeMax={(value) => setMaxV(value)}
     min={-10}
     max={10}
     step={1}
     height={30}
-    renderMinThumb={Thumb} // or (data:TData)=> <div>{data.value}</div>
+    renderMinThumb={Thumb} // or (value:number)=> <div>{value}</div>
     renderMaxThumb={Thumb}
     track={track}
     renderSnapValue={Snap} // or (v:number) => <div>{v}</div>
@@ -57,9 +57,21 @@ const [inputV, setInputV] = useState(0);
     renderThumb={Thumb}
     renderSnapValue={Snap}
     value={inputV}
-    onChange={(data) => setInputV(data.value)}
+    onChange={(value) => setInputV(value)}
 />
 ```
+
+## Reverse Slider Example
+
+![reverse-example.gif](docs%2Freverse-example.gif)
+
+```tsx
+<Slider
+    reverse={true}
+    // ...
+/>
+```
+
 
 ## Interface
 
@@ -70,25 +82,23 @@ type Data = {
 };
 
 type RangeSliderProps = {
-    min: number;
-    max: number;
-    step: number;
-    height: number;
-    snap?: boolean;
-    track: {
-        size: number;
-        style?: React.CSSProperties;
-        fillColor?: string;
-    };
-    renderMinThumb: (data: Data) => React.ReactNode;
-    renderMaxThumb: (data: Data) => React.ReactNode;
-    renderSnapValue?: (value: number) => React.ReactNode;
-    minValue: number;
-    maxValue: number;
-    onChangeMin?: (data: Data) => void;
-    onChangeMax?: (data: Data) => void;
-    minDisabled?: boolean;
-    maxDisabled?: boolean;
+  min: number;
+  max: number;
+  step: number;
+  height: number;
+  snap?: boolean;
+  track: {
+    size: number;
+    style?: React.CSSProperties;
+    fillColor?: string;
+  };
+  renderThumb: (value: number) => React.ReactNode;
+  renderSnapValue?: (value: number) => React.ReactNode;
+  onChange?: (value: number) => void;
+  value: number;
+  disabled?: boolean;
+  reverse?: boolean;
+  snapYOffset?: number;
 };
 
 type SliderProps = {
@@ -102,11 +112,16 @@ type SliderProps = {
         style?: React.CSSProperties;
         fillColor?: string;
     };
-    renderThumb: (data: Data) => React.ReactNode;
+    renderMinThumb: (value: number) => React.ReactNode;
+    renderMaxThumb: (value: number) => React.ReactNode;
     renderSnapValue?: (value: number) => React.ReactNode;
-    onChange?: (data: Data) => void;
-    value: number;
-    disabled?: boolean;
+    minValue: number;
+    maxValue: number;
+    onChangeMin?: (value: number) => void;
+    onChangeMax?: (value: number) => void;
+    maxDisabled?: boolean;
+    minDisabled?: boolean;
+    snapYOffset?: number;
 };
 ```
 
