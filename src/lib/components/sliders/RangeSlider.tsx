@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { calcDataFromValue, map } from "../../util";
 import Thumb from "../Thumb";
-import { Data } from "../../types";
 import { usePointerRef } from "../../hooks/usePointerRef";
 import SnapValues from "../SnapValues";
 
