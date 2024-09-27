@@ -1,5 +1,5 @@
 import { Fragment, memo, useMemo } from "react";
-import { createSnapIndexArray, map } from "../util";
+import { createSnapIndexArray } from "../util";
 
 type Props = {
   min: number;

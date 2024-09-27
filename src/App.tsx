@@ -24,22 +24,23 @@ function App() {
   };
 
   const Thumb = useMemo(
-    () => () => {
-      return (
-        <div
-          style={{
-            width: 6,
-            height: 15,
-            background: "#fff",
-            border: "2px solid #64748b",
-            position: "relative",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        ></div>
-      );
-    },
+    () =>
+      ({ color }: { color?: string }) => {
+        return (
+          <div
+            style={{
+              width: 6,
+              height: 15,
+              background: color ?? "#fff",
+              border: "2px solid #64748b",
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          ></div>
+        );
+      },
     [],
   );
 
@@ -76,15 +77,14 @@ function App() {
         <RangeSlider
           minValue={minV}
           maxValue={maxV}
-          maxDisabled
-          onChangeMin={(value) => setMinV(value.value)}
-          onChangeMax={(value) => setMaxV(value.value)}
-          min={-10}
+          onChangeMin={(v) => setMinV(v)}
+          onChangeMax={(v) => setMaxV(v)}
+          min={0}
           max={10}
           step={1}
           height={30}
-          renderMinThumb={Thumb}
-          renderMaxThumb={Thumb}
+          renderMinThumb={() => <Thumb color={"red"} />}
+          renderMaxThumb={() => <Thumb color={"#fff"} />}
           track={track}
           renderSnapValue={Snap}
         />
@@ -99,7 +99,7 @@ function App() {
             step={1}
             height={30}
             track={track}
-            renderThumb={Thumb}
+            renderThumb={() => <Thumb color={"#fff"} />}
             renderSnapValue={Snap}
             value={inputV}
             onChange={(v) => setInputV(v)}
@@ -117,7 +117,7 @@ function App() {
             step={1}
             height={30}
             track={reverseTrack}
-            renderThumb={Thumb}
+            renderThumb={() => <Thumb color={"#fff"} />}
             renderSnapValue={Snap}
             value={inputV}
             onChange={(v) => setInputV(v)}

@@ -201,7 +201,6 @@ export default function RangeSlider({
             max={max}
             step={step}
             renderSnapValue={renderSnapValue}
-            trackWidth={width}
           />
         )}
       </div>
