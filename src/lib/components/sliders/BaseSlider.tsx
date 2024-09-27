@@ -18,11 +18,11 @@ type Props = {
   };
   renderThumb: (value: number) => React.ReactNode;
   renderSnapValue?: (value: number) => React.ReactNode;
-  snapYOffset?: number;
   onChange?: (value: number) => void;
   value: number;
   disabled?: boolean;
   reverse?: boolean;
+  snapYOffset?: number;
 };
 
 export default function BaseSlider({
@@ -38,7 +38,7 @@ export default function BaseSlider({
   value,
   disabled,
   reverse,
-  snapYOffset,
+  snapYOffset = 0,
 }: Props) {
   const [data, setData] = useState<Data>({
     ratio: map(value, min, max, 0, 1),
@@ -82,12 +82,7 @@ export default function BaseSlider({
     };
   }, []);
 
-  const updateData: TOnUpdateData = (
-    v: number,
-    isRatio?: boolean,
-    isExternal?: boolean,
-    isReverse?: boolean,
-  ) => {
+  const updateData: TOnUpdateData = (v, isRatio, isExternal, isReverse) => {
     if (disabled) return;
     const newData = calcDataFromValue(
       v,
