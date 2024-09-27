@@ -1,6 +1,6 @@
 import { MutableRefObject, useEffect, useRef } from "react";
 import { getTranslateXY, map, safeValue } from "../util";
-import { TPointerState } from "../types";
+import { TOnUpdateData, TPointerState } from "../types";
 
 type Props = {
   value: number;
@@ -8,8 +8,9 @@ type Props = {
   max: number;
   trackWidth: number;
   children: React.ReactNode;
-  onUpdateData: (v: number, ratio?: boolean, isExternal?: boolean) => void;
+  onUpdateData: TOnUpdateData;
   pointerRef: MutableRefObject<TPointerState>;
+  reverse?: boolean;
 };
 
 const Thumb = ({
@@ -20,6 +21,7 @@ const Thumb = ({
   children,
   onUpdateData,
   pointerRef,
+  reverse,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const handleRef = useRef<HTMLDivElement>(null);
@@ -46,7 +48,7 @@ const Thumb = ({
         Math.min(trackWidth, pointerRef.current.startTx + dx),
       );
       const ratio = nextTx / trackWidth;
-      onUpdateData(ratio, true);
+      onUpdateData(ratio, true, false, reverse);
     };
 
     const handlePointerUp = () => {
@@ -62,7 +64,7 @@ const Thumb = ({
       window.removeEventListener("pointermove", handlePointerMove);
       window.removeEventListener("pointerup", handlePointerUp);
     };
-  }, [min, max, trackWidth, onUpdateData]);
+  }, [min, max, trackWidth, onUpdateData, reverse]);
 
   return (
     <div

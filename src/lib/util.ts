@@ -30,6 +30,7 @@ export function calcDataFromValue(
   step: number,
   isSnap: boolean,
   isRatio?: boolean,
+  isReverse?: boolean,
 ): Data {
   const _restrictedV = isRatio
     ? Math.max(0, Math.min(1, v))
@@ -44,9 +45,15 @@ export function calcDataFromValue(
   const newSnappedRatio = map(newSnappedValue, min, max, 0, 1);
   const finalValue = isSnap ? newSnappedValue : newValue;
   const finalRatio = isSnap ? newSnappedRatio : newRatio;
+
+  const reverseValue = min + max - finalValue;
+  const reverseRatio = map(reverseValue, min, max, 0, 1);
+
   return {
-    value: finalValue,
-    ratio: finalRatio,
+    value: isReverse ? reverseValue : finalValue,
+    ratio: isReverse ? reverseRatio : finalRatio,
+    reverseValue: isReverse ? finalValue : reverseValue,
+    reverseRatio: isReverse ? finalRatio : reverseRatio,
   };
 }
 

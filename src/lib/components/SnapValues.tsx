@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { Fragment, memo, useMemo } from "react";
 import { createSnapIndexArray, map } from "../util";
 
 type Props = {
@@ -6,31 +6,29 @@ type Props = {
   max: number;
   step: number;
   renderSnapValue: (value: number) => React.ReactNode;
-  trackWidth: number;
+  reverse?: boolean;
 };
 
 const SnapValues = memo(
-  ({ min, max, step, renderSnapValue, trackWidth }: Props) => {
-    const snapIndexArr = useMemo(
-      () => createSnapIndexArray(min, max, step),
-      [min, max, step],
+  ({ min, max, step, renderSnapValue, reverse }: Props) => {
+    const snapIndexArr = useMemo(() => {
+      const arr = createSnapIndexArray(min, max, step);
+      return reverse ? arr.reverse() : arr;
+    }, [min, max, step, reverse]);
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        {snapIndexArr
+          .filter((v) => !!renderSnapValue(v))
+          .map((v) => {
+            return <Fragment key={v}>{renderSnapValue(v)}</Fragment>;
+          })}
+      </div>
     );
-    return snapIndexArr
-      .filter((v) => !!renderSnapValue(v))
-      .map((v) => {
-        return (
-          <div
-            key={v}
-            style={{
-              position: "absolute",
-              left: `${map(v, min, max, 0, trackWidth)}px`,
-              transform: "translateX(-50%)",
-            }}
-          >
-            {renderSnapValue(v)}
-          </div>
-        );
-      });
   },
 );
 

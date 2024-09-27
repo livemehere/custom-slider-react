@@ -94,7 +94,7 @@ function App() {
             <span>value: {inputV}</span>
           </div>
           <Slider
-            min={-10}
+            min={0}
             max={10}
             step={1}
             height={30}
@@ -102,7 +102,7 @@ function App() {
             renderThumb={Thumb}
             renderSnapValue={Snap}
             value={inputV}
-            onChange={(data) => setInputV(data.value)}
+            onChange={(v) => setInputV(v)}
           />
         </div>
         <div style={{ marginTop: 40 }}>
@@ -111,7 +111,8 @@ function App() {
             <span>value: {inputV}</span>
           </div>
           <Slider
-            min={-10}
+            reverse
+            min={0}
             max={10}
             step={1}
             height={30}
@@ -119,7 +120,7 @@ function App() {
             renderThumb={Thumb}
             renderSnapValue={Snap}
             value={inputV}
-            onChange={(data) => setInputV(data.value)}
+            onChange={(v) => setInputV(v)}
           />
         </div>
       </div>

@@ -3,11 +3,8 @@ import { map, calcDataFromValue } from "../../util";
 import Thumb from "../Thumb";
 import { usePointerRef } from "../../hooks/usePointerRef";
 import SnapValues from "../SnapValues";
+import { Data, TOnUpdateData } from "../../types";
 
-type Data = {
-  ratio: number;
-  value: number;
-};
 type Props = {
   min: number;
   max: number;
@@ -19,11 +16,13 @@ type Props = {
     style?: React.CSSProperties;
     fillColor?: string;
   };
-  renderThumb: (data: Data) => React.ReactNode;
+  renderThumb: (value: number) => React.ReactNode;
   renderSnapValue?: (value: number) => React.ReactNode;
-  onChange?: (data: Data) => void;
+  snapYOffset?: number;
+  onChange?: (value: number) => void;
   value: number;
   disabled?: boolean;
+  reverse?: boolean;
 };
 
 export default function BaseSlider({
@@ -38,11 +37,18 @@ export default function BaseSlider({
   onChange,
   value,
   disabled,
+  reverse,
+  snapYOffset,
 }: Props) {
-  const [data, setData] = useState({
+  const [data, setData] = useState<Data>({
     ratio: map(value, min, max, 0, 1),
     value,
+    reverseValue: min + max - value,
+    reverseRatio: map(min + max - value, min, max, 0, 1),
   });
+
+  const uiValue = reverse ? data.reverseValue : data.value;
+  const uiRatio = reverse ? data.reverseRatio : data.ratio;
 
   useEffect(() => {
     updateData(value, false, true);
@@ -76,15 +82,28 @@ export default function BaseSlider({
     };
   }, []);
 
-  const updateData = (v: number, isRatio?: boolean, isExternal?: boolean) => {
+  const updateData: TOnUpdateData = (
+    v: number,
+    isRatio?: boolean,
+    isExternal?: boolean,
+    isReverse?: boolean,
+  ) => {
     if (disabled) return;
-    const newData = calcDataFromValue(v, min, max, step, snap!, isRatio);
+    const newData = calcDataFromValue(
+      v,
+      min,
+      max,
+      step,
+      snap!,
+      isRatio,
+      isReverse,
+    );
     // prevent duplicated event
     if (newData.value === data.value) return;
     setData(newData);
 
     if (!isExternal) {
-      onChange?.(newData);
+      onChange?.(newData.value);
     }
   };
 
@@ -98,7 +117,7 @@ export default function BaseSlider({
       onPointerDown={(e) => {
         const tx = e.clientX - e.currentTarget.getBoundingClientRect().left;
         const ratio = tx / getTrackWidth();
-        updateData(ratio, true);
+        updateData(ratio, true, false, reverse);
         pointerRef.current.isDown = true;
         pointerRef.current.startX = e.clientX;
         pointerRef.current.startTx = tx;
@@ -119,7 +138,7 @@ export default function BaseSlider({
         className={"slider-fill"}
         style={{
           position: "absolute",
-          width: `${data.ratio * 100}%`,
+          width: `${uiRatio * 100}%`,
           height: `${track.size}px`,
           background: track.fillColor,
           top: `${height / 2 - track.size / 2}px`,
@@ -128,29 +147,31 @@ export default function BaseSlider({
         }}
       ></div>
       <Thumb
+        reverse={reverse}
         pointerRef={pointerRef}
         min={min}
         max={max}
         trackWidth={width}
-        value={data.value}
+        value={uiValue}
         onUpdateData={updateData}
       >
-        {renderThumb(data)}
+        {renderThumb(data.value)}
       </Thumb>
       <div
         style={{
           position: "absolute",
-          bottom: 0,
+          top: "100%",
           width: "100%",
+          transform: `translateY(${snapYOffset ?? 0}px)`,
         }}
       >
         {renderSnapValue && (
           <SnapValues
+            reverse={reverse}
             min={min}
             max={max}
             step={step}
             renderSnapValue={renderSnapValue}
-            trackWidth={width}
           />
         )}
       </div>
