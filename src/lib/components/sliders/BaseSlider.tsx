@@ -52,7 +52,7 @@ export default function BaseSlider({
 
   useEffect(() => {
     updateData(value, false, true);
-  }, [value]);
+  }, [value, min, max]);
 
   const pointerRef = usePointerRef();
   const trackRef = useRef<HTMLDivElement>(null);
@@ -94,7 +94,6 @@ export default function BaseSlider({
       isReverse,
     );
     // prevent duplicated event
-    if (newData.value === data.value) return;
     setData(newData);
 
     if (!isExternal) {

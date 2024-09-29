@@ -3,9 +3,27 @@ import { RangeSlider, Slider } from "./lib";
 
 function App() {
   const [minV, setMinV] = useState(0);
-  const [maxV, setMaxV] = useState(10);
+  const [maxV, setMaxV] = useState(2);
+  const [curSetIdx, setCurSetIdx] = useState(0);
+  const sets = [
+    {
+      min: 0,
+      max: 10,
+      value: 7,
+    },
+    {
+      min: 0,
+      max: 5,
+      value: 3,
+    },
+    {
+      min: 0,
+      max: 12,
+      value: 1,
+    },
+  ];
 
-  const [inputV, setInputV] = useState(0);
+  const curSet = sets[curSetIdx];
 
   const track = {
     size: 10,
@@ -69,18 +87,19 @@ function App() {
           width: 300,
         }}
       >
-        <h2>RangeSlider</h2>
         <div>
-          <span>min: {minV} / </span>
-          <span>max: {maxV}</span>
+          <div>current max : {curSet.max}</div>
+          <div>current min : {curSet.min}</div>
+          <div>current value : {curSet.value}</div>
         </div>
+        <h2>RangeSlider</h2>
         <RangeSlider
           minValue={minV}
           maxValue={maxV}
           onChangeMin={(v) => setMinV(v)}
           onChangeMax={(v) => setMaxV(v)}
-          min={0}
-          max={10}
+          min={curSet.min}
+          max={curSet.max}
           step={1}
           height={30}
           renderMinThumb={() => <Thumb color={"red"} />}
@@ -90,38 +109,50 @@ function App() {
         />
         <div style={{ marginTop: 40 }}>
           <h2>InputSlider</h2>
-          <div>
-            <span>value: {inputV}</span>
-          </div>
+
           <Slider
-            min={0}
-            max={10}
+            min={curSet.min}
+            max={curSet.max}
             step={1}
             height={30}
             track={track}
             renderThumb={() => <Thumb color={"#fff"} />}
             renderSnapValue={Snap}
-            value={inputV}
-            onChange={(v) => setInputV(v)}
+            value={curSet.value}
           />
         </div>
         <div style={{ marginTop: 40 }}>
           <h2>InputSlider Reverse</h2>
-          <div>
-            <span>value: {inputV}</span>
-          </div>
           <Slider
             reverse
-            min={0}
-            max={10}
+            min={curSet.min}
+            max={curSet.max}
             step={1}
             height={30}
             track={reverseTrack}
             renderThumb={() => <Thumb color={"#fff"} />}
             renderSnapValue={Snap}
-            value={inputV}
-            onChange={(v) => setInputV(v)}
+            value={curSet.value}
+            onChange={(v) => {
+              console.log(v);
+            }}
           />
+          <div>
+            <button
+              style={{
+                marginTop: 40,
+              }}
+            >
+              reset
+            </button>
+            <button
+              onClick={() => {
+                setCurSetIdx((prev) => (prev + 1) % sets.length);
+              }}
+            >
+              change sets
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -99,7 +99,6 @@ export default function RangeSlider({
     if (maxDisabled) return;
     const newData = calcNewData(v, ratio);
     if (newData.value < minData.value) return;
-    if (newData.value === maxData.value) return;
     setMaxData(newData);
     if (!isExternal) {
       onChangeMax?.(newData.value);
@@ -111,7 +110,6 @@ export default function RangeSlider({
     const newData = calcNewData(v, ratio);
     // prevent duplicated event
     if (newData.value > maxData.value) return;
-    if (newData.value === minData.value) return;
     setMinData(newData);
     if (!isExternal) {
       onChangeMin?.(newData.value);
