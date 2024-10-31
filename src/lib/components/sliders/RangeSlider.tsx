@@ -98,7 +98,6 @@ export default function RangeSlider({
   const updateMaxData = (v: number, ratio?: boolean, isExternal?: boolean) => {
     if (maxDisabled) return;
     const newData = calcNewData(v, ratio);
-    if (newData.value < minData.value) return;
     setMaxData(newData);
     if (!isExternal) {
       onChangeMax?.(newData.value);
@@ -109,7 +108,6 @@ export default function RangeSlider({
     if (minDisabled) return;
     const newData = calcNewData(v, ratio);
     // prevent duplicated event
-    if (newData.value > maxData.value) return;
     setMinData(newData);
     if (!isExternal) {
       onChangeMin?.(newData.value);
@@ -166,24 +164,28 @@ export default function RangeSlider({
         }}
       ></div>
       <Thumb
-        pointerRef={maxThumbPointerRef}
-        min={min}
-        max={max}
-        trackWidth={width}
-        value={maxData.value}
-        onUpdateData={updateMaxData}
-      >
-        {renderMaxThumb(maxData.value)}
-      </Thumb>
-      <Thumb
-        pointerRef={minThumbPointerRef}
-        min={min}
-        max={max}
-        trackWidth={width}
-        value={minData.value}
-        onUpdateData={updateMinData}
+          pointerRef={minThumbPointerRef}
+          min={min}
+          max={max}
+          trackWidth={width}
+          value={minData.value}
+          onUpdateData={(ratio, isRatio, isExternal) => {
+            updateMinData(Math.min(ratio, maxData.ratio), isRatio, isExternal);
+          }}
       >
         {renderMinThumb(minData.value)}
+      </Thumb>
+      <Thumb
+          pointerRef={maxThumbPointerRef}
+          min={min}
+          max={max}
+          trackWidth={width}
+          value={maxData.value}
+          onUpdateData={(ratio, isRatio, isExternal) => {
+            updateMaxData(Math.max(ratio, minData.ratio), isRatio, isExternal);
+          }}
+      >
+        {renderMaxThumb(maxData.value)}
       </Thumb>
       <div
         style={{
