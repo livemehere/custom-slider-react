@@ -45,6 +45,7 @@ export default function RangeSlider({
   minDisabled,
   snapYOffset,
 }: Props) {
+
   const [minData, setMinData] = useState({
     ratio: map(minValue, min, max, 0, 1),
     value: minValue,
@@ -55,12 +56,11 @@ export default function RangeSlider({
     value: maxValue,
   });
 
+
   useEffect(() => {
     updateMaxData(maxValue, false, true);
-  }, [maxValue]);
-  useEffect(() => {
     updateMinData(minValue, false, true);
-  }, [minValue]);
+  }, [maxValue,minValue,min,max]);
 
   const trackRef = useRef<HTMLDivElement>(null);
   const trackStyle = track.style || {};
