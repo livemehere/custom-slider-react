@@ -2,12 +2,12 @@ import { useMemo, useState } from "react";
 import { RangeSlider, Slider } from "./lib";
 
 function App() {
-  const [minV, setMinV] = useState(0);
-  const [maxV, setMaxV] = useState(2);
+  const [minV, setMinV] = useState(3);
+  const [maxV, setMaxV] = useState(6);
   const [curSetIdx, setCurSetIdx] = useState(0);
   const sets = [
     {
-      min: 0,
+      min: 3,
       max: 10,
       value: 7,
     },
@@ -88,11 +88,15 @@ function App() {
         }}
       >
         <div>
-          <div>current max : {curSet.max}</div>
           <div>current min : {curSet.min}</div>
+          <div>current max : {curSet.max}</div>
           <div>current value : {curSet.value}</div>
         </div>
         <h2>RangeSlider</h2>
+          <div>
+              <div>min : {minV}</div>
+              <div>max : {maxV}</div>
+          </div>
         <RangeSlider
           minValue={minV}
           maxValue={maxV}
